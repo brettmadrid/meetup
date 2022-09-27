@@ -1,29 +1,46 @@
+import { useState, useEffect } from 'react';
 import MeetupList from '../components/meetups/MeetupList';
 
-const DUMMY_DATA = [
-  {
-    id: 'm1',
-    title: 'Dehd Concert',
-    image:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Slowdive_at_Crystal_Ballroom%2C_2014.jpg/1024px-Slowdive_at_Crystal_Ballroom%2C_2014.jpg',
-    address: 'Burnside St., Portland, Oregon',
-    description: 'This is a great new young band!',
-  },
-  {
-    id: 'm2',
-    title: 'Shovels and Rope Concert',
-    image:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Shovels_%26_Rope_at_Riverfest_in_Grand_Rapids%2C_Minnesota.jpg/1280px-Shovels_%26_Rope_at_Riverfest_in_Grand_Rapids%2C_Minnesota.jpg',
-    address: 'Eugene, Oregon',
-    description: 'This is a very good folk style band.',
-  },
-];
-
 function AllMeetupsPage() {
+  const [isLoading, setIsLoading] = useState(true);
+  const [loadedMeetups, setLoadedMeetups] = useState([]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    fetch(
+      'https://react-getting-started-f15a5-default-rtdb.firebaseio.com/meetups.json',
+    )
+      .then(response => {
+        return response.json();
+      })
+      .then(data => {
+        const meetups = [];
+
+        for (const key in data) {
+          const meetup = {
+            id: key,
+            ...data[key],
+          };
+
+          meetups.push(meetup);
+        }
+
+        setIsLoading(false);
+        setLoadedMeetups(meetups);
+      });
+  }, []);
+
+  if (isLoading) {
+    return (
+      <section>
+        <p>Loading...</p>
+      </section>
+    );
+  }
   return (
     <section>
       <h1>All meetups</h1>
-      <MeetupList meetups={DUMMY_DATA} />
+      <MeetupList meetups={loadedMeetups} />
     </section>
   );
 }
