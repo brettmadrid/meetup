@@ -18,7 +18,7 @@ export function FavoritesContextProvider(props) {
 
   function addFavoriteHandler(favoriteMeetup) {
     setUserFavorites(prevUserFavorites => {
-      setUserFavorites(prevUserFavorites.concat(favoriteMeetup));
+      return prevUserFavorites.concat(favoriteMeetup);
     });
   }
 
