@@ -13,7 +13,7 @@ const FavoritesContext = createContext({
 // component for way of updating context object values
 // made available wherever state values are needed or updated
 
-function FavoritesContextProvider(props) {
+export function FavoritesContextProvider(props) {
   const [userFavorites, setUserFavorites] = useState([]);
 
   function addFavoriteHandler(favoriteMeetup) {
@@ -47,3 +47,5 @@ function FavoritesContextProvider(props) {
     </FavoritesContext.Provider>
   );
 }
+
+export default FavoritesContext;
